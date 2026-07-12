@@ -11,10 +11,17 @@
     if (localStorage.getItem('tetris-theme') === 'light') {
       document.body.classList.add('light');
     }
+    document.body.classList.add('skin-' + (localStorage.getItem('tetris-skin') || 'retro'));
   </script>
   <div class="wrapper">
     <div class="title-bar">
       <h1 class="game-title">TETRIS</h1>
+      <select id="skin-select" title="Cambiar skin" aria-label="Cambiar skin visual">
+        <option value="retro">Retro</option>
+        <option value="neon">Neon</option>
+        <option value="pastel">Pastel</option>
+        <option value="pixel">Pixel art</option>
+      </select>
       <button id="theme-toggle" title="Cambiar tema" aria-label="Cambiar tema claro/oscuro">🌙</button>
     </div>
 
