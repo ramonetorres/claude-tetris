@@ -125,6 +125,14 @@ body {
   padding-top: 4px;
 }
 
+/* Keep the records panel (and its reset button) usable even while the
+   game-over/pause overlay is shown, since the overlay spans the whole
+   wrapper (board + sidebar). */
+.panel-section.records {
+  position: relative;
+  z-index: 1;
+}
+
 .panel-section {
   display: flex;
   flex-direction: column;
@@ -231,5 +239,129 @@ kbd {
 }
 
 #restart-btn:hover {
+  background: var(--btn-hover);
+}
+
+/* ---- Records ---- */
+.records-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.records-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  color: var(--control-text);
+}
+
+.records-list li .rank {
+  color: var(--label);
+  min-width: 14px;
+}
+
+.records-list li .name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.records-list li .score {
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--value);
+}
+
+.records-list li.empty {
+  color: var(--control-text);
+  font-style: italic;
+}
+
+.records-list li.new-record {
+  color: var(--overlay-title);
+  font-weight: 700;
+}
+
+.records-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.records-stats > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.value.small {
+  font-size: 14px;
+}
+
+#reset-records-btn {
+  margin-top: 6px;
+  background: transparent;
+  color: var(--control-text);
+  border: 1px solid var(--board-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.15s;
+}
+
+#reset-records-btn:hover {
+  background: var(--kbd-bg);
+}
+
+/* ---- Name entry (game over) ---- */
+.new-record-msg {
+  color: var(--overlay-title);
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+
+.new-record-msg.hidden {
+  display: none;
+}
+
+.name-entry {
+  display: flex;
+  gap: 8px;
+}
+
+.name-entry.hidden {
+  display: none;
+}
+
+#name-input {
+  background: var(--board-bg);
+  border: 1px solid var(--board-border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 140px;
+}
+
+#save-score-btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#save-score-btn:hover {
   background: var(--btn-hover);
 }
