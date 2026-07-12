@@ -1,0 +1,40 @@
+name: Claude Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Issue Triage
+        id: claude-triage
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh issue edit:*),Bash(gh issue comment:*),Bash(gh label list:*)"'
+          prompt: |
+            Analiza el issue #${{ github.event.issue.number }} de este repositorio (proyecto de Tetris en JavaScript vainilla, ver CLAUDE.md y game.js para contexto de la arquitectura).
+
+            Pasos a seguir:
+            1. Lee el issue completo con `gh issue view ${{ github.event.issue.number }}`.
+            2. Revisa las labels disponibles en el repo con `gh label list` y elige las que apliquen (por ejemplo: bug, documentation, duplicate, enhancement, good first issue, help wanted, invalid, question, wontfix). No crees labels nuevas.
+            3. Aplica las labels elegidas con `gh issue edit ${{ github.event.issue.number }} --add-label "..."`.
+            4. Publica un comentario de diagnóstico con `gh issue comment ${{ github.event.issue.number }} --body "..."` que incluya:
+               - Resumen breve del problema o solicitud.
+               - Área/función del código probablemente involucrada (referenciando game.js según la arquitectura descrita en CLAUDE.md: board model, colisiones, rotación, game loop, scoring, rendering, etc.).
+               - Causa raíz hipotética (si aplica, para bugs) o alcance sugerido (si es una feature).
+               - Sugerencia de enfoque para la solución, sin escribir código todavía — esto es solo diagnóstico para guiar el trabajo posterior.
+
+            No modifiques ningún archivo del código ni crees pull requests. Tu única salida son las labels aplicadas y el comentario de diagnóstico en el issue.
